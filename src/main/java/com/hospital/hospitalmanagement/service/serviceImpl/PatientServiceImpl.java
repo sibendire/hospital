@@ -25,7 +25,20 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public Patient updatePatient(Patient patient) {
-        return null;
+        Patient patients = patientRepository.existsById(Long);
+        patients.setFirstName(patients.getFirstName());
+        patients.setOtherName(patients.getOtherName());
+        patients.setLastName(patients.getLastName());
+        patients.setDateOfBirth(patients.getDateOfBirth());
+        patients.setAddress(patients.getAddress());
+        patients.setPhone(patients.getPhone());
+        patients.setNationality(patients.getNationality());
+        patients.setNextName(patients.getNextName());
+        patients.setPostCode(patients.getPostCode());
+        patients.setPhoneNumber(patients.getPhoneNumber());
+        patients.setRelationShip(patients.getRelationShip());
+
+        return patientRepository.save(patients);
     }
 
     @Override
