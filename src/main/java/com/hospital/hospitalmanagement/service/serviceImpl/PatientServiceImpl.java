@@ -4,8 +4,8 @@ import com.hospital.hospitalmanagement.entity.Patient;
 import com.hospital.hospitalmanagement.repository.PatientRepository;
 import com.hospital.hospitalmanagement.service.PatientService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 @Service
@@ -25,18 +25,23 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public Patient updatePatient(Patient patient) {
-        Patient patients = patientRepository.existsById(Long);
-        patients.setFirstName(patients.getFirstName());
-        patients.setOtherName(patients.getOtherName());
-        patients.setLastName(patients.getLastName());
-        patients.setDateOfBirth(patients.getDateOfBirth());
-        patients.setAddress(patients.getAddress());
-        patients.setPhone(patients.getPhone());
-        patients.setNationality(patients.getNationality());
-        patients.setNextName(patients.getNextName());
-        patients.setPostCode(patients.getPostCode());
-        patients.setPhoneNumber(patients.getPhoneNumber());
-        patients.setRelationShip(patients.getRelationShip());
+        return null;
+    }
+
+    @Override
+    public Patient updatePatient(@PathVariable Long id, Patient patient) {
+        Patient patients = patientRepository.getPatientById(id);
+        patients.setFirstName(patient.getFirstName());
+        patients.setOtherName(patient.getOtherName());
+        patients.setLastName(patient.getLastName());
+        patients.setDateOfBirth(patient.getDateOfBirth());
+        patients.setAddress(patient.getAddress());
+        patients.setPhone(patient.getPhone());
+        patients.setNationality(patient.getNationality());
+        patients.setNextName(patient.getNextName());
+        patients.setPostCode(patient.getPostCode());
+        patients.setPhoneNumber(patient.getPhoneNumber());
+        patients.setRelationShip(patient.getRelationShip());
 
         return patientRepository.save(patients);
     }
