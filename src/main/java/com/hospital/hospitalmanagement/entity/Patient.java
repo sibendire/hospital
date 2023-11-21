@@ -6,12 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+import java.time.LocalDate;
+import java.util.List;
+
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Patients")
+@Entity
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +22,7 @@ public class Patient {
     private String firstName;
     private String otherName;
     private String lastName;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
     private String PhoneNumber;
     private String email;
     private String postCode;
@@ -29,6 +32,19 @@ public class Patient {
     private String nextName;
     private String phone;
     private String relationShip;
+    @OneToOne
+    @JoinColumn(name = "diagnosis_id")
+    private Diagnosis diagnosis;
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
+    @ManyToMany
+    @JoinTable(name = "patient_diagnosis",
+            joinColumns = @JoinColumn(name = "patient_id"),
+            inverseJoinColumns = @JoinColumn(name = "institute_id")
+
+    )
+    private List<Institute> institute;
 
 
 }
