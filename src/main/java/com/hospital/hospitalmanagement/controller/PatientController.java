@@ -2,40 +2,66 @@ package com.hospital.hospitalmanagement.controller;
 
 import com.hospital.hospitalmanagement.entity.Patient;
 import com.hospital.hospitalmanagement.service.PatientService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+import java.util.Optional;
 
 @Controller
 public class PatientController {
-    @Autowired
+
     private final PatientService patientService;
 
     public PatientController(PatientService patientService) {
         this.patientService = patientService;
     }
 
-    @GetMapping("/list")
-    public String showAllPatients(Model model) {
-        model.addAttribute("patient" ,patientService.getAllPatient());
-        return "patient_list";
-    }
-
-    @GetMapping("/patients")
-    public String showPatient(Model model) {
-        model.addAttribute("patient", new Patient());
-        return "patient_Form";
-    }
-
     @PostMapping("/savePatient")
-    public String saveNewPatient(Patient patient) {
+    public ResponseEntity<String> saveNewPatient(@RequestBody Patient patient) {
         patientService.savePatient(patient);
-        return "redirect:patient_list";
+        return ResponseEntity.status(HttpStatus.CREATED).body("Patient saved successfully");
     }
 
+    @GetMapping("/patients/{id}")
+    public ResponseEntity<Patient> getPatientById(@PathVariable("id") Long id) {
+        Optional<Patient> patient = patientService.getPatientById(id);
+        if (patient.isPresent()) {
+            return ResponseEntity.ok(patient.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<Patient>> showAllPatients() {
+        List<Patient> patients = patientService.getAllPatients();
+        if (patients.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } else {
+            return ResponseEntity.ok(patients);
+        }
+    }
+
+    @PutMapping("/patients/{id}")
+    public ResponseEntity<String> updatePatient(@PathVariable("id") Long id, @RequestBody Patient patient) {
+        boolean updated = patientService.updatePatient(id, patient);
+        if (updated) {
+            return ResponseEntity.ok("Patient updated successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/patients/{id}")
+    public ResponseEntity<String> deletePatient(@PathVariable("id") Long id) {
+        boolean deleted = patientService.deletePatient(id);
+        if (deleted) {
+            return ResponseEntity.ok("Patient deleted successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

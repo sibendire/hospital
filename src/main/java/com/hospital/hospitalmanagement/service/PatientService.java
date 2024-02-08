@@ -1,8 +1,8 @@
 package com.hospital.hospitalmanagement.service;
 
 import com.hospital.hospitalmanagement.entity.Patient;
-import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface PatientService {
@@ -10,11 +10,9 @@ public interface PatientService {
 
     Optional<Patient> getPatientById(long id);
 
-    Patient updatePatient(Patient patient);
+    boolean updatePatient(Long id, Patient patient);
 
-    Patient updatePatient(@PathVariable Long id, Patient patient);
+    boolean deletePatient(Long id);
 
-    Patient getAllPatient();
-
-    void deletePatientById(long id);
+    List<Patient> getAllPatients();
 }
