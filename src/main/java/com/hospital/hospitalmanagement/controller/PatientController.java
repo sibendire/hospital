@@ -5,11 +5,13 @@ import com.hospital.hospitalmanagement.service.PatientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
+//@RestController
 @Controller
 public class PatientController {
 
@@ -18,6 +20,13 @@ public class PatientController {
     public PatientController(PatientService patientService) {
         this.patientService = patientService;
     }
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/show")
+    public String showPage( Model model){
+        model.addAttribute("patient",new Patient());
+        return "test";
+    }
+
 
     @PostMapping("/savePatient")
     public ResponseEntity<String> saveNewPatient(@RequestBody Patient patient) {
